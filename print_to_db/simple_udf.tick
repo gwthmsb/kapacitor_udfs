@@ -1,0 +1,15 @@
+dbrp "udf_db"."autogen"
+
+var input = batch 
+               | query('select * from "udf_db"."autogen"."sample_data"')
+                    .period(1m)
+                    .every(1m)
+
+input
+  @utilization()
+   .field('field1')
+   | influxDBOut()
+      .database('udf_db')
+      .create()
+      .measurement('from_udf')
+  

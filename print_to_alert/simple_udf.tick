@@ -1,0 +1,13 @@
+dbrp "udf_db"."autogen"
+
+var input = stream 
+               | from()
+                 .measurement('sample_data')
+
+input
+  @utilization()
+   .field('field1')
+  | alert()
+    .crit(lambda: TRUE)
+    .log('/var/spool/log_tick.log')
+  
